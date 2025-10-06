@@ -42,13 +42,13 @@ info "Wiping partitions on $DISK and creating GPT layout..."
 wipefs -af "$DISK"
 pacman -Sy --noconfirm --needed gptfdisk parted
 sgdisk --zap-all "$DISK"
-
+sync
 # Create partitions: 1=EFI, 2=swap, 3=root
 sgdisk -n1:0:"$BOOT_SIZE" -t1:ef00 -c1:"EFI System" \
        -n2:0:"$SWAP_SIZE" -t2:8200 -c2:"Linux swap" \
        -n3:0:0 -t3:8300 -c3:"Linux filesystem" \
        "$DISK"
-
+sync
 partprobe "$DISK"
 sleep 1
 
@@ -62,12 +62,13 @@ info "Formatting partitions..."
 mkfs.fat -F32 -n BOOT "$BOOT"
 mkswap -L SWAP "$SWAP"
 mkfs.ext4 -L ROOT "$ROOT"
-
+sync
 info "Mounting partitions..."
 swapon /dev/disk/by-label/SWAP || true
 mount /dev/disk/by-label/ROOT /mnt
 mkdir -p /mnt/boot/efi
 mount /dev/disk/by-label/BOOT /mnt/boot/efi
+sync
 
 # --------------------------
 # Stage 2: Network & time (live)

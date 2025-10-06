@@ -24,7 +24,9 @@ export WALLPAPER_SRC="/usr/share/backgrounds/artix/simple.png"
 # --------------------------
 
 info() {
+	echo -ne "\033[0;33m"
 	printf '>>> %s\n' "$*"
+	echo -ne "\033[0;0m"
 }
 
 if [ "$(id -u)" -ne 0 ]; then
@@ -90,7 +92,7 @@ chronyd -q 'server time.cloudflare.com iburst' || true
 # Stage 3: Pre-basestrap pacman.conf edit (live)
 # --------------------------
 info "Editing /etc/pacman.conf before basestrap. Opening vim"
-sleep 1
+pacman -S vim
 vim /etc/pacman.conf || true
 info "Press ENTER to continue..."
 read -r _

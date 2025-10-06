@@ -84,9 +84,7 @@ fi
 
 info "Temporary time sync using chrony (live environment)..."
 pacman -Sy --needed chrony chrony-runit || true
-ln -sf /etc/runit/sv/chronyd /run/runit/service/chronyd 2>/dev/null || true
-sv up chronyd 2>/dev/null || true
-chronyc -a makestep 2>/dev/null || true
+chronyd -q 'server time.cloudflare.com iburst' || true
 
 # --------------------------
 # Stage 3: Pre-basestrap pacman.conf edit (live)

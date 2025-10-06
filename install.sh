@@ -40,7 +40,7 @@ info "Make sure this is correct. Script will wipe it."
 # --------------------------
 info "Wiping partitions on $DISK and creating GPT layout..."
 wipefs -af "$DISK"
-pacman -Sy gptfdisk
+pacman -Sy --noconfirm --needed gptfdisk parted
 sgdisk --zap-all "$DISK"
 
 # Create partitions: 1=EFI, 2=swap, 3=root

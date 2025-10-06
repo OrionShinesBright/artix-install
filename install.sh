@@ -102,7 +102,7 @@ read -r _
 # --------------------------
 info "Running basestrap to install Artix base system to /mnt..."
 baseStrapping () {
-	basestrap -iK --noconfirm /mnt \
+	basestrap -iK /mnt \
 		base base-devel \
 		runit elogind-runit \
 		linux linux-firmware-intel linux-headers \

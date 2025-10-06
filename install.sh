@@ -119,6 +119,13 @@ baseStrapping
 info "Generating fstab (UUIDs)..."
 fstabgen -L /mnt >> /mnt/etc/fstab
 
+# --- Allow the user to edit pacman.conf in chroot ---
+info "Edit /mnt/etc/pacman.conf to adjust pacman (vim will open)."
+sleep 1
+vim /mnt/etc/pacman.conf || true
+info "Press ENTER to continue..."
+read -r _
+
 # --------------------------
 # Stage 5: chroot configuration
 # --------------------------
@@ -133,13 +140,6 @@ HOSTNAME="${HOSTNAME}"
 USERNAME="${USERNAME}"
 WALLPAPER_SRC="${WALLPAPER_SRC}"
 info() { printf '>>> %s\n' "$*"; }
-
-# --- Allow the user to edit pacman.conf in chroot ---
-info "Edit /etc/pacman.conf inside chroot now if you want to adjust pacman (vim will open)."
-sleep 1
-vim /etc/pacman.conf || true
-info "Press ENTER to continue..."
-read -r _
 
 # --- Timezone and locale ---
 info "Setting timezone to ${TIMEZONE}..."

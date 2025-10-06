@@ -9,7 +9,7 @@ A(n almost) fully automated artix-install script that I made for no freaking rea
   b. If on *windows*: look into rufus, and run from ventoy, cuz booiiiiii does ventoy hate artix..<br>
 3. MAKE **BACKUPS** OF YOUR EXISTING SYSTEM CUZ THIS SCRIPT WILL **ERASE ALLLLLL DATA** ON YOUR PC. DO *NOT* TAKE THIS LIGHTLY.
 4. **Boot** off of the USB, by smashing all the function keys of your PC, immediately after it powers on.
-5. Once you are in the **artix splash screen** (The screen that looks blue with weird neon lighting), press your down-arrow to go down (wow) to the option that says `Disk blah blah`. Press enter.
+5. Once you are in the **artix splash screen** (The screen that looks blue with weird neon lighting), press your down-arrow to go down (wow) to the option that says `From CD/DVD/ISO blah blah`. Press enter.
 6. You are now in big scary darkness (terminal)
 ## Making the Live Environment Usable
 7. The system will scare you for a few seconds, and then scare you more by showing something like: [image]<br>

@@ -83,7 +83,7 @@ if ! ping -c 3 -W 2 artixlinux.org >/dev/null 2>&1; then
 fi
 
 info "Temporary time sync using chrony (live environment)..."
-pacman -Sy --needed --noconfirm chrony chrony-runit || true
+pacman -Sy --needed chrony chrony-runit || true
 ln -sf /etc/runit/sv/chronyd /run/runit/service/chronyd 2>/dev/null || true
 sv up chronyd 2>/dev/null || true
 chronyc -a makestep 2>/dev/null || true

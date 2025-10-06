@@ -112,6 +112,7 @@ baseStrapping () {
 		zsh zsh-completions \
 		chrony chrony-runit || baseStrapping
 }
+baseStrapping
 
 info "Generating fstab (UUIDs)..."
 fstabgen -L /mnt >> /mnt/etc/fstab

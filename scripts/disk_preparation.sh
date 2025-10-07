@@ -67,6 +67,9 @@ p::status "ROOT formatted as ext4"
 sync
 
 p::section "DISK MOUNTING"
+p::info "Unmounting previous mounts, and turning off old swap"
+umount -a
+swapoff /dev/disk/by-label/SWAP || p::info "No previous SWAP"
 p::info "Turning SWAP on"
 swapon "$SWAP" || p::err "SWAP could not be started"
 p::status "SWAP is on"
@@ -81,7 +84,3 @@ if [ "$EFI" == 1 ]; then
 	p::status "BOOT mounted at /mnt/boot/efi"
 fi
 sync
-
-p::section "FSTAB GENERATION"
-fstabgen -L /mnt >> /mnt/etc/fstab || p::err "Fstab could not be generated"
-p::status "FSTAB generated."

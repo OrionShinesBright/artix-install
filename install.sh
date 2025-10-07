@@ -18,5 +18,6 @@ source "$SCRIPT_DIR/scripts/pacman_live.sh";	sync
 # Disk/Partition Handling
 source "$SCRIPT_DIR/scripts/disk_preparation.sh";	sync
 # Basestrapping
-source "$SCRIPT_DIR/scripts/basestrapping.sh";		sync
+source "$SCRIPT_DIR/scripts/basestrapping.sh";	sync
+source "$SCRIPT_DIR/scripts/fstabgen.sh";		sync
 # Chrooting preparation (make script files at /mnt/usr/share/palantir, and chmod +x them, and source them one by one afterwards, once we go into chroot)

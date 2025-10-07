@@ -74,7 +74,7 @@ info "Mounting ROOT at /mnt"
 mount "$ROOT" /mnt || p::err "ROOT could not be mount at /mnt"
 p::status "ROOT is mounted at /mnt"
 if [ "$EFI" == 1 ]; then
-	info "Mounting BOOT at /mnt/boot/efi"
+	p::info "Mounting BOOT at /mnt/boot/efi"
 	mkdir -p /mnt/boot/efi || p::err "mkdir failed at creating /mnt/boot/efi"
 	sync
 	mount "$BOOT" /mnt/boot/efi || p::err "BOOT could not be mounted"

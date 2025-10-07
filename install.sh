@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 IFS=$'\n\t'
-[ -z "$DISPLAY" ] && setfont -d
+setfont -d
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 LOGFILE="$SCRIPT_DIR/log.txt"

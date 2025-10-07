@@ -68,16 +68,16 @@ sync
 
 p::section "DISK MOUNTING"
 p::info "Turning SWAP on"
-swapon /dev/disk/by-label/SWAP || p::err "SWAP could not be started"
+swapon "$SWAP" || p::err "SWAP could not be started"
 p::status "SWAP is on"
 info "Mounting ROOT at /mnt"
-mount /dev/disk/by-label/ROOT /mnt || p::err "ROOT could not be mount at /mnt"
+mount "$ROOT" /mnt || p::err "ROOT could not be mount at /mnt"
 p::status "ROOT is mounted at /mnt"
 if [ "$EFI" == 1 ]; then
 	info "Mounting BOOT at /mnt/boot/efi"
 	mkdir -p /mnt/boot/efi || p::err "mkdir failed at creating /mnt/boot/efi"
 	sync
-	mount /dev/disk/by-label/BOOT /mnt/boot/efi || p::err "BOOT could not be mounted"
+	mount "$BOOT" /mnt/boot/efi || p::err "BOOT could not be mounted"
 	p::status "BOOT mounted at /mnt/boot/efi"
 fi
 sync

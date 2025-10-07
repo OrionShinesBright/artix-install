@@ -22,18 +22,22 @@ If that shows `0`, then you're good to go, otherwise, please just connect your p
 ## Getting this script
 9. Here is how you can run it within the running live environment. This script should not take too long. It takes about 25 minutes, from start to finish, on my slow as heck internet (~300K/s)
 ```bash
-curl -fsSL https://raw.githubusercontent.com/OrionShinesBright/artix-install/main/install.sh -o install.sh
+pacman -Sy --needed --noconfirm git bash
+git clone https://github.com/OrionShinesBright/artix-install.git
 ```
 10. Please go through the script by running the following command, and do not proceed to next step until you have changed the variables at the start according to your liking
 ```bash
-nano install.sh
+cd ~/artix-install
+vim install.sh
 ```
 ## Starting the Installation
 > [!WARNING]
 > PLEASE MAKE **BACKUPS**
 > This will delete the entire disk.
-11. Run the script as follows:
+11. Run the first part of the script as follows:
 ```bash
+cd ~/artix-install
 chmod +x install.sh
 ./install.sh
 ```
+12. The second part will run after the chroot.

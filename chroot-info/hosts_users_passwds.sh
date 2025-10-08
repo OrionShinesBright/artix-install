@@ -15,7 +15,7 @@ p::info "Creating user '${USERNAME}' (if not exists)..."
 if ! id -u "${USERNAME}" >/dev/null 2>&1; then
   useradd -m -G wheel,audio,video,storage -s /bin/zsh "${USERNAME}" || p::err "Failed to create user ${USERNAME}"
 else
-  p::warn "User ${USERNAME} already exists, skipping creation."
+  echo  "User ${USERNAME} already exists, skipping creation."
 fi
 
 p::info "Set root password now:"
@@ -31,7 +31,7 @@ if ! command -v sudo >/dev/null 2>&1; then
 fi
 
 p::info "Opening visudo (vim will open)."
-EDITOR=vim visudo || p::warn "visudo exited with non-zero status"
+EDITOR=vim visudo || p::err "visudo exited with non-zero status"
 
 p::status "User and password configuration complete."
 p::ahead

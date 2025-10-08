@@ -6,7 +6,7 @@ ln -sf "/usr/share/zoneinfo/${TIMEZONE}" /etc/localtime || p::err "Failed to set
 hwclock --systohc || p::err "Failed to sync hardware clock"
 
 p::info "Enabling locale ${LOCALE}..."
-sed -i "s|^#\(${LOCALE} UTF-8\)|\1|" /etc/locale.gen || p::warn "Could not uncomment ${LOCALE} in locale.gen"
+sed -i "s|^#\(${LOCALE} UTF-8\)|\1|" /etc/locale.gen || p::err "Could not uncomment ${LOCALE} in locale.gen"
 locale-gen || p::err "locale-gen failed"
 
 # Write /etc/locale.conf atomically

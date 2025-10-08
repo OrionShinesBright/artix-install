@@ -10,16 +10,16 @@ for repo in dwm dmenu st; do
         mkdir -p ~/src &&
         cd ~/src &&
         [ -d ~/${repo} ] || git clone https://git.suckless.org/${repo}
-    " || p::warn "Could not clone ${repo}"
+    " || p::err "Could not clone ${repo}"
     cd "/home/${USERNAME}/src/${repo}" || continue
     make clean || true
-    make PREFIX=/usr || p::warn "Build failed for ${repo}"
+    make PREFIX=/usr || p::err "Build failed for ${repo}"
     make PREFIX=/usr install || p::err "Install failed for ${repo}"
 done
 
 # --- Fix ownership ---
 p::info "Fixing ownership for /home/${USERNAME}"
-chown -R "${USERNAME}:${USERNAME}" "/home/${USERNAME}" || p::warn "Could not chown home dir"
+chown -R "${USERNAME}:${USERNAME}" "/home/${USERNAME}" || p::err "Could not chown home dir"
 
 p::status "Userspace setup complete."
 p::ahead

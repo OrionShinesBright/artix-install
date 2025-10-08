@@ -56,27 +56,25 @@ export LOCALE="en_US.UTF-8"
 p::status "Locale set to $LOCALE"
 p::ahead
 
-p::section "CHOOSE TEXT EDITOR"
+p::section "INSTALLING TEXT EDITOR"
 p::info "Many editors are available, notably: vim, and nano."
-p::info "Note that vim is notoriously difficult. Choose nano if unsure"
-read -rp "Which editor to choose [nano]: " EDITOR
-EDITOR="${EDITOR:-nano}"
-pacman -S --needed --noconfirm "$EDITOR"
+p::info "We shall be using vim"
+pacman -Sy --needed --noconfirm vim
+export EDITOR='vim'
 sync
-p::status "$EDITOR installed."
+p::status "vim installed."
 p::ahead
 
 ENV_FILE="$SCRIPT_DIR/chroot-info/artix_env.sh"
 cat >"$ENV_FILE" <<EOF
 export DISK='$DISK'
 export EFI='$EFI'
-export BOOT_SIZE='$BOOT_SIZE'
-export SWAP_SIZE='$SWAP_SIZE'
 export HOSTNAME='$HOSTNAME'
 export USERNAME='$USERNAME'
 export TIMEZONE='$TIMEZONE'
 export LOCALE='$LOCALE'
 export EDITOR='$EDITOR'
+export PALANTIR='/home/$USERNAME/.palantir'
 EOF
 
 p::status "All environment variables saved to $ENV_FILE"

@@ -6,7 +6,7 @@ wipefs -af "$DISK"
 sync
 p::status "Wiped."
 p::info "Installing gptfdisk and parted"
-pacman -Sy --noconfirm --needed gptfdisk parted || p::err "parted could not be installed"
+pacman -S --noconfirm --needed gptfdisk parted || p::err "parted could not be installed"
 p::status "Installed."
 sgdisk --zap-all "$DISK"
 sync
@@ -68,9 +68,16 @@ sync
 
 p::section "DISK MOUNTING"
 p::info "Unmounting previous mounts, and turning off old swap"
-umount -a
-swapoff /dev/disk/by-label/SWAP || p::info "No previous SWAP"
-p::info "Turning SWAP on"
+if mountpoint -q /mnt; then
+  p::info "Unmounting any existing mounts under /mnt"
+  umount -R /mnt || true
+fi
+if swapon --noheadings --summary | grep -q .; then
+  p::info "Turning off all swap devices"
+  swapoff --all || p::err "Failed to turn off swap"
+fi
+
+p::info "Turning new SWAP on"
 swapon "$SWAP" || p::err "SWAP could not be started"
 p::status "SWAP is on"
 info "Mounting ROOT at /mnt"

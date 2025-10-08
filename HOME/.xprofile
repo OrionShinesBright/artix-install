@@ -1,0 +1,4 @@
+#!/bin/bash
+pipewire &> /dev/null &
+wireplumber &> /dev/null &
+redshift -l 24.86:67.01 &> /dev/null &

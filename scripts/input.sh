@@ -65,6 +65,8 @@ sync
 p::status "vim installed."
 p::ahead
 
+export PALANTIR="/home/$USERNAME/.palantir"
+
 ENV_FILE="$SCRIPT_DIR/chroot-info/artix_env.sh"
 cat >"$ENV_FILE" <<EOF
 export DISK='$DISK'

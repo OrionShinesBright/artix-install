@@ -4,8 +4,6 @@ IFS=$'\n\t'
 setfont -d
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-LOGFILE="$SCRIPT_DIR/log.txt"
-exec > >(tee "$LOGFILE") 2>&1
 
 ####################
 # BASE-ARTIX Setup #

@@ -69,14 +69,14 @@ export PALANTIR="/home/$USERNAME/.palantir"
 
 ENV_FILE="$SCRIPT_DIR/chroot-info/artix_env.sh"
 cat >"$ENV_FILE" <<EOF
-export DISK='$DISK'
-export EFI='$EFI'
-export HOSTNAME='$HOSTNAME'
-export USERNAME='$USERNAME'
-export TIMEZONE='$TIMEZONE'
-export LOCALE='$LOCALE'
-export EDITOR='$EDITOR'
-export PALANTIR='/home/$USERNAME/.palantir'
+export DISK="$DISK"
+export EFI="$EFI"
+export HOSTNAME="$HOSTNAME"
+export USERNAME="$USERNAME"
+export TIMEZONE="$TIMEZONE"
+export LOCALE="$LOCALE"
+export EDITOR="$EDITOR"
+export PALANTIR="/home/$USERNAME/.palantir"
 EOF
 
 p::status "All environment variables saved to $ENV_FILE"

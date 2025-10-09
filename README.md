@@ -15,7 +15,7 @@ A(n almost) fully automated artix-install script that I made for no freaking rea
 6. You are now in big scary darkness (terminal)
 ## Making the Live Environment Usable
 7. The system will scare you for a few seconds, and then scare you more by showing something like: [image]<br>
-Please write `artix` and press enter, then write `artix` and press enter again when it asks for password.
+Please write `root` and press enter, then write `artix` and press enter again when it asks for password.
 8. Now.. the fun part. **Connecting to the internet** :) Anything I write here will probably go out of date, so instead, I'll point you to [Artix-wiki InternetConnection](https://wiki.artixlinux.org/Main/Installation#Connect_to_the_Internet). Once you are done, please run
 ```bash
 ping -c 3 google.com; echo $?

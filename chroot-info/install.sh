@@ -3,7 +3,9 @@ set -euo pipefail
 IFS=$'\n\t'
 setfont -d
 
+sync
 pacman -Syy
+sync
 
 source "$PALANTIR/artix_env.sh"; 			sync
 source "$PALANTIR/helpers.sh";				sync
@@ -20,9 +22,4 @@ source "$PALANTIR/audio.sh";				sync
 source "$PALANTIR/display-login.sh";		sync
 source "$PALANTIR/extras.sh";				sync
 source "$PALANTIR/services-core.sh";		sync
-source "$PALANTIR/userconfs.sh";			sync
-source "$PALANTIR/display-login.sh";		sync
-source "$PALANTIR/display-login.sh";		sync
-source "$PALANTIR/display-login.sh";		sync
-source "$PALANTIR/display-login.sh";		sync
 source "$PALANTIR/finalize.sh";				sync

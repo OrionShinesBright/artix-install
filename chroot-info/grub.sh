@@ -6,21 +6,23 @@ p::section "BOOTLOADER SETUP"
 [ -z "$DISK" ] && p::err "DISK variable not set — internal error"
 
 if [ "$EFI" = "1" ]; then
-    p::info "Detected EFI system — installing GRUB for UEFI..."
+    p::info "Detected EFI system and installing GRUB for UEFI"
     grub-install \
         --target=x86_64-efi \
         --efi-directory=/boot/efi \
         --bootloader-id=grub || p::err "GRUB EFI install failed"
 else
-    p::info "Detected BIOS system — installing GRUB for legacy boot..."
+    p::info "Detected BIOS system and installing GRUB for legacy boot"
     grub-install \
         --target=i386-pc \
         "$DISK" \
         --recheck || p::err "GRUB BIOS install failed"
 fi
+sync
 p::status "GRUB has been installed"
-
+echo
 p::info "Generating configuation for GRUB"
 grub-mkconfig -o /boot/grub/grub.cfg || p::err "Failed to generate GRUB config"
+sync
 p::status "Configuration complete."
 p::ahead

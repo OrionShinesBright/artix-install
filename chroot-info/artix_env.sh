@@ -1,8 +1,0 @@
-export DISK='/dev/nvme0n1'
-export EFI='1'
-export HOSTNAME='artix'
-export USERNAME='user'
-export TIMEZONE='UTC'
-export LOCALE='en_US.UTF-8'
-export EDITOR='vim'
-export PALANTIR='/home/user/.palantir'

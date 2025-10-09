@@ -3,7 +3,8 @@
 p::section "Package Management"
 
 p::info "Installing pacman-contrib"
-pacman -Syu --needed --noconfirm pacman-contrib curl || p::err "Failed to install pacman-contrib and/or curl"
+pacman -S --needed --noconfirm pacman-contrib curl || p::err "Failed to install pacman-contrib and/or curl"
+pacman -S --needed --noconfirm archlinux-keyring artix-keyring
 sync
 p::status "Pacman-contrib installed"
 
@@ -14,7 +15,7 @@ sed -i 's/^#Server/Server/' /etc/pacman.d/mirrorlist-arch || p::err "Mirrorlist 
 p::status "Mirrorlist updated"
 
 p::info "Ranking top mirrors (this may take a bit of time)"
-rankmirrors -n 10 /etc/pacman.d/mirrorlist-arch >/etc/pacman.d/mirrorlist-arch.ranked || p::err "Mirror ranking failed"
+rankmirrors -n 5 -v /etc/pacman.d/mirrorlist-arch >/etc/pacman.d/mirrorlist-arch.ranked || p::err "Mirror ranking failed"
 mv -f /etc/pacman.d/mirrorlist-arch.ranked /etc/pacman.d/mirrorlist-arch || p::err "Mirrorlist movement failed"
 sync
 p::status "Ranked mirrors."
@@ -35,21 +36,8 @@ sync
 
 p::info "Initializing pacman keyring..."
 pacman-key --init || p::err "pacman-key init failed (may already exist)"
-pacman-key --populate || p::err "pacman-key populate failed"
+pacman-key --populate archlinux artix || p::err "pacman-key populate failed"
 pacman -Syyu --noconfirm || p::err "Final system update failed"
 sync
 p::status "Keyring managed"
-
-p::info "Building yay-bin (AUR helper) as ${USERNAME}"
-su -l "${USERNAME}" -c '
-  cd ~ &&
-  rm -rf yay-bin &&
-  git clone https://aur.archlinux.org/yay-bin.git &&
-  cd yay-bin &&
-  makepkg -si --noconfirm
-' || p::err "Failed to build yay-bin"
-rm -rf "/home/${USERNAME}/yay-bin" || true
-sync
-p::status "Yay built"
-
 p::ahead

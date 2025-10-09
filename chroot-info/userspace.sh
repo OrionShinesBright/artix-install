@@ -2,7 +2,7 @@
 
 p::section "USERSPACE SETUP"
 p::info "Preparing home for ${USERNAME}..."
-install -d -m 755 "/home/${USERNAME}/src" "/home/${USERNAME}/.config" "/home/${USERNAME}/pics"
+mkdir -p /home/"${USERNAME}"/{Desktop,docs,downs,moosiq,pics,repos,src,vids} || p::err "mkdir on xdg user-dirs failed"
 sync
 p::status "HOME is ready"
 
@@ -11,18 +11,16 @@ pacman -S libxft libxinerama || p::err "Could not install libxft + libxinerama"
 sync
 p::status "Installed"
 
-p::info "Cloning and building suckless software..."
+p::info "Cloning suckless software"
+mkdir -p /home/"${USERNAME}"/src/suckless || p::err "Could not create suckless dir"
 for repo in dwm dmenu st; do
-    su -l "${USERNAME}" -c "
-        mkdir -p ~/src &&
-        cd ~/src &&
-        [ -d ~/${repo} ] || git clone https://git.suckless.org/${repo}
-    " || p::err "Could not clone ${repo}"
-    p::status "Cloned $repo"
-    cd "/home/${USERNAME}/src/${repo}" || continue
-    make clean install || p::err "Install failed for ${repo}"
-    p::status "$repo was installed"
+    [ -d /home/"${USERNAME}"/"${repo}" ] || git clone https://git.suckless.org/${repo} /home/"${USERNAME}"/src/suckless/"${repo}" || p::err "Could not clone ${repo}"
+	p::status "Cloned $repo"
 done
+
+p::info "Cloning yay-bin"
+git clone --depth=1 https://aur.archlinux.org/yay-bin.git /home/"${USERNAME}"/src/yay-bin || p::err "Could not clone yay-bin"
+p::status "Cloned yay-bin"
 
 p::status "Userspace setup complete."
 p::ahead

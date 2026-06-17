@@ -14,7 +14,7 @@ hwclock --systohc
 echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
 locale-gen
 echo 'export LANG="en_US.UTF-8"' > /etc/locale.conf
-echo 'export LC_COLLATE="C"' > /etc/locale.conf
+echo 'export LC_COLLATE="C"' >> /etc/locale.conf
 
 # boot loader
 grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=grub
@@ -34,8 +34,10 @@ echo "$hn" > /etc/hostname
 echo "127.0.1.1        $hn.localdomain  $hn" >> /etc/hosts
 
 # network
+mkdir -p /etc/dinit.d/boot.d
 ln -s ../connmand /etc/dinit.d/boot.d/
 
 # finalize
 echo "Run 'umount -R /mnt' and then reboot. Good luck!"
+rm -- "$0"
 exit

@@ -10,7 +10,7 @@ pacman -Sy --needed --noconfirm fzf
 sleep 0.5
 echo 'DONE'
 
-export FZF_DEFAULT_OPTS="-i --ansi --style=full --color=dark --height=~75% --margin=5 --padding=5 --border=horizontal --border-label=ARTIX-INSTALLER --border-label-pos=0:bottom --highlight-line --wrap=word --wrap-sign='->  ' --scroll-off=4 --list-border=horizontal --list-label-pos=0 --ghost='awaiting input..' --gutter='.' --info=hidden --input-border=bottom --input-label-pos=1000 --header-border=bottom --header-first --footer='After the storm, the sun shines bright' --footer-border=top --preview-window=left,wrap --preview-border=vertical"
+export FZF_DEFAULT_OPTS="-i --ansi --style=full --color=dark --height=75% --margin=5 --padding=5 --border=horizontal --border-label=ARTIX-INSTALLER --border-label-pos=0:bottom --highlight-line --wrap=word --wrap-sign='->  ' --scroll-off=4 --list-border=horizontal --list-label-pos=0 --ghost='awaiting input..' --gutter='.' --info=hidden --input-border=bottom --input-label-pos=1000 --header-border=bottom --header-first --footer='After the storm, the sun shines bright' --footer-border=top --preview-window=left,wrap --preview-border=vertical"
 # all FFZFers must declare
 # 	--list-label=
 # 	--prompt=
@@ -90,8 +90,7 @@ clear
 dinitctl start chrony
 
 # base-strap
-basestrap /mnt base base-devel dinit elogind-dinit
-basestrap /mnt linux linux-firmware
+basestrap /mnt base base-devel dinit elogind-dinit linux linux-firmware
 
 # fstab
 fstabgen -L /mnt >> /mnt/etc/fstab

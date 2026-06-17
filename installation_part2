@@ -1,0 +1,41 @@
+#!/bin/bash
+
+# deps
+pacman -S grub os-prober efibootmgr
+pacman -S connman-dinit connman-gtk
+
+# time
+read -rp "Enter your timezone region: " region
+read -rp "Enter your timezone city: " city
+ln -sf /usr/share/zoneinfo/"$region"/"$city" /etc/localtime
+hwclock --systohc
+
+# locales
+echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
+locale-gen
+echo 'export LANG="en_US.UTF-8"' > /etc/locale.conf
+echo 'export LC_COLLATE="C"' > /etc/locale.conf
+
+# boot loader
+grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=grub
+grub-mkconfig -o /boot/grub/grub.cfg
+
+# usermgmt
+echo "Enter root user passwd:"
+passwd
+
+read -rp "Enter username for new user: " username
+useradd -mG wheel -s /bin/bash "$username"
+passwd "$username"
+
+# hostname
+read -rp "Enter hostname: " hn
+echo "$hn" > /etc/hostname
+echo "127.0.1.1        $hn.localdomain  $hn" >> /etc/hosts
+
+# network
+ln -s ../connmand /etc/dinit.d/boot.d/
+
+# finalize
+echo "Run 'umount -R /mnt' and then reboot. Good luck!"
+exit

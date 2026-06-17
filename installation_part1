@@ -1,0 +1,102 @@
+#!/bin/bash
+
+DISK_LABEL='/dev/nvme0n1'
+
+clear
+
+# deps
+echo 'Getting dependencies..'
+pacman -Sy --needed --noconfirm fzf
+sleep 0.5
+echo 'DONE'
+
+export FZF_DEFAULT_OPTS="-i --ansi --style=full --color=dark --height=~75% --margin=5 --padding=5 --border=horizontal --border-label=ARTIX-INSTALLER --border-label-pos=0:bottom --highlight-line --wrap=word --wrap-sign='->  ' --scroll-off=4 --list-border=horizontal --list-label-pos=0 --ghost='awaiting input..' --gutter='.' --info=hidden --input-border=bottom --input-label-pos=1000 --header-border=bottom --header-first --footer='After the storm, the sun shines bright' --footer-border=top --preview-window=left,wrap --preview-border=vertical"
+# all FFZFers must declare
+# 	--list-label=
+# 	--prompt=
+# 	--input-label=
+# 	--header= (this is basically for descriptions)
+
+clear
+
+# kb layout
+LAYOUT=$(find /usr/share/kbd/keymaps -type f | sed 's/.*\///' | awk -F. '{print $1}' | fzf --list-label='Available Keymaps' --prompt='Choose a Keymap > ' --input-label='SECTION 1' --header='Select whichever keyboard layout you normally use')
+loadkeys $LAYOUT
+
+clear
+
+# disk partitioning
+while true; do
+	choice_disks="$(echo -e '1. Partition Disks\n2. Make Filesystems\n3. Mount filesystems\n0. FINISHED' | fzf --list-label='Disk Operations' --prompt='Select an action > ' --input-label='SECTION 2' --header='Best to follow these in order, unless you know what you want')"
+	choice_disks="$(echo $choice_disks | awk -F. '{print $1}')"
+	case $choice_disks in
+		'1')
+			cfdisk "$DISK_LABEL"
+			sync
+			;;
+		'2')
+			part="/dev/$(lsblk --list --noheadings --output NAME | fzf --preview='lsblk -f --output NAME,LABEL,FSTYPE,MOUNTPOINT,FSAVAIL,SIZE /dev/{}')"
+			fs="$(echo -e "ext4\nfat32\nswap" | fzf --header="Select fs for $part")"
+			read -rp 'Enter a label: ' label
+			case $fs in
+				'ext4')
+					mkfs.ext4 -L "$label" "$part"
+					;;
+				'fat32')
+					mkfs.vfat -F32 -n "$label" "$part"
+					;;
+				'swap')
+					mkswap -L "$label" "$part"
+			esac
+			sync
+			;;
+		'3')
+			part="/dev/$(lsblk --list --noheadings --output NAME | fzf --preview='lsblk -f --output NAME,LABEL,FSTYPE,MOUNTPOINT,FSAVAIL,SIZE /dev/{}')"
+			mtpt="$(echo -e "root\nboot\nboot/efi\nhome\nswap\nextra" | fzf --header="Select mountpoint for for $part")"
+			case "$mtpt" in
+				'root')
+					mount "$part" /mnt
+					;;
+				'boot')
+					mount --mkdir "$part" /mnt/boot
+					;;
+				'boot/efi')
+					mount --mkdir "$part" /mnt/boot/efi
+					;;
+				'home')
+					mount --mkdir "$part" /mnt/home
+					;;
+				'swap')
+					swapon "$part"
+					;;
+				'extra')
+					read -rp "Enter a mountpoint (like /home/shared, or /shared, etc): " mt
+					mount --mkdir "$part" /mnt"$mt"
+					;;
+			esac
+			sync
+			;;
+		'0')
+			sync
+			;;
+	esac
+	[ -z $choice_disks ] && continue
+	[ $choice_disks -eq 0 ] && break
+done
+
+clear
+
+# syncing system clock
+dinitctl start chrony
+
+# base-strap
+basestrap /mnt base base-devel dinit elogind-dinit
+basestrap /mnt linux linux-firmware
+
+# fstab
+fstabgen -L /mnt >> /mnt/etc/fstab
+
+# chroot
+cp installation_part2 /mnt
+echo "Run './installation_part2' after this. Goodluck!"
+artix-chroot /mnt
